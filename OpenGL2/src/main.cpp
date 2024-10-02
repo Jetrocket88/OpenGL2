@@ -86,16 +86,17 @@ int main(void)
             orthoData[i] *= orthoScale;
         }
 
-
         glm::mat4 proj = glm::ortho(orthoData[0], orthoData[1], orthoData[2], orthoData[3], -1.0f, 1.0f);
         glm::mat4 veiw = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
         Shader shader("resources/shaders/Basic.shader");
         shader.Bind();
-        shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
+		shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
 
 
-        //float angle = 45.0f * (3.14159265358979323846 / 180.0f);
+        float angle1, angle2;
+		angle1 = 0.0f;
+		angle2 = 0.0f;
 
         Texture texture("resources/textures/Cat.png");
         texture.Bind();
@@ -116,8 +117,8 @@ int main(void)
         glm::vec3 translationA(200, 200, 0);
         glm::vec3 translationB(400, 200, 0);
 
-        float r = 0.0f;
-        float inc = 0.00005f; 
+		float colour1[3] = { 1.0f, 0.0f, 0.0f };
+		float colour2[3] = { 1.0f, 0.0f, 0.0f };
         
         while (!glfwWindowShouldClose(window))
         {
@@ -131,6 +132,8 @@ int main(void)
                 glm::mat4 mvp = proj * veiw * model;
                 shader.Bind();
                 shader.SetUniformMat4f("u_MVP", mvp);
+                shader.SetUniform4f("u_Color", colour1[0], colour1[1], colour1[2], 1.0f);
+                shader.SetUniform1f("angle", angle1);
                 renderer.Draw(va, ib, shader);
             }
 
@@ -139,19 +142,19 @@ int main(void)
                 glm::mat4 mvp = proj * veiw * model;
                 shader.Bind();
                 shader.SetUniformMat4f("u_MVP", mvp);
+                shader.SetUniform4f("u_Color", colour2[0], colour2[1], colour2[2], 1.0f);
+                shader.SetUniform1f("angle", angle2);
                 renderer.Draw(va, ib, shader);
             }
-
-            if (r > 1 || r < 0.0)
-            {
-                inc = -inc;
-            }
-            r += inc;
 
             {
                 ImGui::SliderFloat3("Translation A", &translationA.x, 0.0f, 960.0f);
                 ImGui::SliderFloat3("Translation B", &translationB.x, 0.0f, 960.0f);
+                ImGui::SliderFloat("Rotation A", &angle1, 0.0f, 6.28319);
+                ImGui::SliderFloat("Rotation B", &angle2, 0.0f, 6.28319);
                 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+				ImGui::ColorEdit3("Colour Picker A", &colour1[0]);
+				ImGui::ColorEdit3("Colour Picker B", &colour2[0]);
             }
 
             ImGui::Render();

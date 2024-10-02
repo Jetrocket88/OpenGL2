@@ -14,10 +14,10 @@ void main()
 {
     v_TexCoord = texCoord;
 
-    //mat2 rotation = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-    //vec2 rotatedPosition = rotation * position.xy;
+    mat2 rotation = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+    vec2 rotatedPosition = rotation * position.xy;
 
-    gl_Position = u_MVP * position;
+    gl_Position = u_MVP * vec4(rotatedPosition, position.z, position.w);
 
 }
 
@@ -34,6 +34,5 @@ uniform sampler2D u_Texture;
 void main()
 {
     vec4 texColor = texture(u_Texture, v_TexCoord);
-    color = texColor;
     color = u_Color;
 }
