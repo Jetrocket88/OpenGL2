@@ -23,6 +23,7 @@
 #include "imgui/imgui_impl_glfw_gl3.h"
 
 #include "tests/testClearColour.h"
+#include "tests/testTexture2D.h"
 
 
 
@@ -67,6 +68,7 @@ int main(void)
         currentTest = testMenu;
 
         testMenu->RegisterTest<test::TestClearColour>("Clear Colour");
+        testMenu->RegisterTest<test::TestTexture2D>("Texture Test 2D");
                 
         while (!glfwWindowShouldClose(window))
         {
