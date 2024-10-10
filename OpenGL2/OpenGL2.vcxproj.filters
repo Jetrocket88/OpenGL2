@@ -895,7 +895,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resources\textures\Cat.png">
+    <Image Include="resources\textures\Cat.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

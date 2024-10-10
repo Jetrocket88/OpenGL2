@@ -13,19 +13,19 @@ namespace test
 {
 	TestTexture2D::TestTexture2D()
         :m_TranslationA(200, 200, 0), 
-        m_TranslationB(400, 2000, 0),
+        m_TranslationB(400, 200, 0),
         m_Proj(glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f)),
         m_Veiw(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)))
 
 	{
         float positions[] =
         {
-            -50.0f, -50.0f, 0.0f, 0.0f, //0 top left
-            50.0f, -50.0f, 1.0f, 0.0f, //1 top right
-            50.0f, 50.0f, 1.0f, 1.0f, //2 bottom right
-            -50.0f, 50.0f, 0.0f, 1.0f  //3 bottom left
+            -100.0f, -100.0f, 0.0f, 0.0f, //0 top left
+            100.0f, -100.0f, 1.0f, 0.0f, //1 top right
+            100.0f, 100.0f, 1.0f, 1.0f, //2 bottom right
+            -100.0f, 100.0f, 0.0f, 1.0f  //3 bottom left
         };
-
+       
         //This is the index buffer, it means that you dont need to reuse positions
         unsigned int indices[] =
         {
@@ -37,7 +37,7 @@ namespace test
         GLCall(glEnable(GL_BLEND));
 
         m_VAO = std::make_unique<VertexArray>();
-        m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 4 * 4 * sizeof(unsigned int));
+        m_VertexBuffer = std::make_unique<VertexBuffer>(positions, 4 * 4 * sizeof(float));
 
         VertexBufferLayout layout;
         layout.Push<float>(2);
@@ -46,18 +46,11 @@ namespace test
         m_VAO->AddBuffer(*m_VertexBuffer, layout);
         m_IndexBuffer = std::make_unique<IndexBuffer>(indices, 6);
 
-        float orthoScale = 1.0f;
-        float orthoData[4] = { 0, 960, 0, 540 };
-        for (int i = 0; i < 3; i++)
-        {
-            orthoData[i] *= orthoScale;
-        }
-
         m_Shader = std::make_unique<Shader>("resources/shaders/Basic.shader");
         m_Shader->Bind();
-        m_Shader->SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
+        m_Shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-        m_Texture = std::make_unique<Texture>("resources/textures/Cat.png");
+        m_Texture = std::make_unique<Texture>("resources/textures/Cat.jpg");
         m_Shader->SetUniform1i("u_Texture", 0);
 
 	}
